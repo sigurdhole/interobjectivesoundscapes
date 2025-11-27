@@ -1,99 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Interobjective Soundscapes</title>
-
-<style>
-  body {
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    font-family: serif;
-    margin-top: 20vh;
-  }
-
-  /* minimalistisk play-prikk */
-  .play-dot {
-    width: 16px;                 /* juster størrelse om ønsket */
-    height: 16px;
-    background-color: #ffffff;   /* hvit prikk */
-    border-radius: 50%;
-    margin: 0 auto 20px auto;    /* luft rundt prikken */
-    cursor: pointer;
-    transition: 0.3s ease;
-    opacity: 0.85;
-  }
-
-  /* glød mens lyd spiller */
-  .play-dot.playing {
-    box-shadow: 0 0 10px 4px rgba(255,255,255,0.7);
-    opacity: 1;
-  }
-
-  /* skjul standard audio-player */
-  audio {
-    display: none;
-  }
-
-  p {
-    margin-top: 12px;
-    font-size: 0.85rem;
-    color: #ddd;
-    letter-spacing: 0.5px;
-  }
-
-  h1 {
-    margin-bottom: 40px;
-    font-weight: normal;
-    letter-spacing: 1px;
-  }
-
-  footer {
-    margin-top: 60px;
-    font-size: 0.65rem;
-    color: #666;
-    opacity: 0.45;
-    letter-spacing: 0.5px;
-  }
-</style>
-</head>
-
-<body>
-
-<h1>Interobjective Soundscapes</h1>
-
-<!-- play-prikk -->
-<div class="play-dot" id="playDot"></div>
-
-<!-- lydfil -->
-<audio id="frag1">
-  <source src="fragment1_requiemforastar.wav" type="audio/wav">
-</audio>
-
-<p>an echo of a future event</p>
-
-<footer>© 2025 Sigurd Hole</footer>
-
-</body>
-
-<script>
-  const dot = document.getElementById('playDot');
-  const audio = document.getElementById('frag1');
-
-  dot.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play();
-      dot.classList.add('playing');
-    } else {
-      audio.pause();
-      dot.classList.remove('playing');
+  <meta charset="UTF-8" />
+  <title>interobjective soundscapes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
     }
-  });
 
-  audio.addEventListener('ended', () => {
-    dot.classList.remove('playing');
-  });
-</script>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      background: #050509;
+      color: #f5f5f5;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 18px;
+    }
+
+    header {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .play-button {
+      width: 24px;
+      height: 24px;
+      margin: 0 auto 16px auto;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #ffffff, #d0d8ff);
+      box-shadow:
+        0 0 6px rgba(255, 255, 255, 0.7),
+        0 0 18px rgba(160, 180, 255, 0.55),
+        0 0 28px rgba(120, 140, 255, 0.35);
+      cursor: pointer;
+      transition:
+        transform 160ms ease-out,
+        box-shadow 160ms ease-out,
+        opacity 160ms ease-out;
+    }
+
+    .play-button:hover {
+      transform: scale(1.2);
+      box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.9),
+        0 0 26px rgba(170, 190, 255, 0.7),
+        0 0 40px rgba(130, 150, 255, 0.5);
+    }
+
+    .play-button.is-playing {
+      opacity: 0.8;
+      box-shadow:
+        0 0 4px rgba(255, 255, 255, 0.6),
+        0 0 14px rgba(150, 170, 255, 0.35);
+    }
+
+    .caption {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    footer {
+      font-size: 0.7rem;
+      opacity: 0.55;
+      text-align: right;
+      padding-top: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 32px 40px;
+      }
+      .caption {
+        font-size: 1rem;
+      }
+      header {
+        font-size: 0.85rem;
+      }
+      footer {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>interobjective soundscapes</header>
+
+    <main>
+      <div class="center">
+        <div class="play-button" id="playButton" aria-label="play fragment"></div>
+        <p class="caption">an echo of a future event</p>
+      </div>
+    </main>
+
+    <footer>© Sigurd Hole</footer>
+  </div>
+
+  <audio id="fragmentAudio" src="fragment1_requiemforastar.wav"></audio>
+
+  <script>
+    const button = document.getElementById("playButton");
+    const audio = document.getElementById("fragmentAudio");
+
+    let isPlaying = false;
+
+    button.addEventListener("click", () => {
+      if (!audio.src) return;
+
+      if (!isPlaying) {
+        audio.currentTime = 0;
+        audio.play();
+        isPlaying = true;
+        button.classList.add("is-playing");
+      } else {
+        audio.pause();
+        isPlaying = false;
+        button.classList.remove("is-playing");
+      }
+    });
+
+    audio.addEventListener("ended", () => {
+      isPlaying = false;
+      button.classList.remove("is-playing");
+    });
+  </script>
+</body>
 </html>
