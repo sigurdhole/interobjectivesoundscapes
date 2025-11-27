@@ -1,99 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
-audio {
-    transform: scale(0.3);
-    transform-origin: center;
-}
-    /* Øverst: subtil tittel */
-    .title {
-      position: fixed;
-      top: 20px;
-      width: 100%;
-      text-align: center;
-      color: rgba(255,255,255,0.22);
-      font-size: 12px;
-      letter-spacing: 1px;
-      user-select: none;
-    }
+<meta charset="UTF-8">
+<title>Interobjective Soundscapes</title>
 
-    /* Selve "stjernen" (play-knappen) */
-    .star {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.9);
-      cursor: pointer;
-      transition: transform 0.25s ease, opacity 0.25s ease;
-    }
-    .star:hover {
-      transform: scale(1.08);
-      opacity: 1;
-    }
+<style>
+  body {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-family: serif;
+    margin-top: 20vh;
+  }
 
-    /* Undertekst */
-    .subtitle {
-      position: fixed;
-      top: calc(50% + 70px);
-      width: 100%;
-      text-align: center;
-      color: rgba(255,255,255,0.25);
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      user-select: none;
-      pointer-events: none;
-    }
+  /* minimalistisk play-prikk */
+  .play-dot {
+    width: 16px;                 /* juster størrelse om ønsket */
+    height: 16px;
+    background-color: #ffffff;   /* hvit prikk */
+    border-radius: 50%;
+    margin: 0 auto 20px auto;    /* luft rundt prikken */
+    cursor: pointer;
+    transition: 0.3s ease;
+    opacity: 0.85;
+  }
 
-    /* Copyright nederst */
-    .credit {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      color: rgba(255,255,255,0.45);
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      user-select: none;
-    }
-  </style>
+  /* glød mens lyd spiller */
+  .play-dot.playing {
+    box-shadow: 0 0 10px 4px rgba(255,255,255,0.7);
+    opacity: 1;
+  }
+
+  /* skjul standard audio-player */
+  audio {
+    display: none;
+  }
+
+  p {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: #ddd;
+    letter-spacing: 0.5px;
+  }
+
+  h1 {
+    margin-bottom: 40px;
+    font-weight: normal;
+    letter-spacing: 1px;
+  }
+
+  footer {
+    margin-top: 60px;
+    font-size: 0.65rem;
+    color: #666;
+    opacity: 0.45;
+    letter-spacing: 0.5px;
+  }
+</style>
 </head>
+
 <body>
 
-  <!-- Øverst: subtil tittel -->
-  <div class="title">interobjective soundscapes</div>
+<h1>Interobjective Soundscapes</h1>
 
-  <!-- Lydfil (fragment) -->
-  <audio id="frag" src="fragment1_requiemforastar.wav"></audio>
+<!-- play-prikk -->
+<div class="play-dot" id="playDot"></div>
 
-  <!-- Play-knappen ("stjernen") -->
-  <div class="star" onclick="playFragment()"></div>
+<!-- lydfil -->
+<audio id="frag1">
+  <source src="fragment1_requiemforastar.wav" type="audio/wav">
+</audio>
 
-  <!-- Undertekst -->
-  <div class="subtitle">an echo of a future event</div>
+<p>an echo of a future event</p>
 
-  <!-- Copyright -->
-  <div class="credit">© 2025 Sigurd Hole</div>
-
-  <script>
-    function playFragment() {
-      const audio = document.getElementById('frag');
-      audio.currentTime = 0;
-      audio.play();
-    }
-  </script>
+<footer>© 2025 Sigurd Hole</footer>
 
 </body>
+
+<script>
+  const dot = document.getElementById('playDot');
+  const audio = document.getElementById('frag1');
+
+  dot.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      dot.classList.add('playing');
+    } else {
+      audio.pause();
+      dot.classList.remove('playing');
+    }
+  });
+
+  audio.addEventListener('ended', () => {
+    dot.classList.remove('playing');
+  });
+</script>
+
 </html>
