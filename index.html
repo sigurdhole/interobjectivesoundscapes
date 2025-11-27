@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    /* Øverst: subtil tittel */
+    .title {
+      position: fixed;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255,255,255,0.22);
+      font-size: 12px;
+      letter-spacing: 1px;
+      user-select: none;
+    }
+
+    /* Selve "stjernen" (play-knappen) */
+    .star {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      cursor: pointer;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .star:hover {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+
+    /* Undertekst */
+    .subtitle {
+      position: fixed;
+      top: calc(50% + 70px);
+      width: 100%;
+      text-align: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Copyright nederst */
+    .credit {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      color: rgba(255,255,255,0.45);
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Øverst: subtil tittel -->
+  <div class="title">interobjective soundscapes</div>
+
+  <!-- Lydfil (fragment) -->
+  <audio id="frag" src="fragment1_requiemforastar.wav"></audio>
+
+  <!-- Play-knappen ("stjernen") -->
+  <div class="star" onclick="playFragment()"></div>
+
+  <!-- Undertekst -->
+  <div class="subtitle">an echo of a future event</div>
+
+  <!-- Copyright -->
+  <div class="credit">© 2025 S. Hole</div>
+
+  <script>
+    function playFragment() {
+      const audio = document.getElementById('frag');
+      audio.currentTime = 0;
+      audio.play();
+    }
+  </script>
+
+</body>
+</html>
