@@ -2,112 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>interobjective soundscapes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* Basestil */
     body {
       margin: 0;
+      padding: 0;
+      background: #000000;
+      color: #f5f5f5;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
       height: 100vh;
-      background: #000;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      font-family: sans-serif;
+      flex-direction: column;
     }
 
-    /* Øverst: subtil tittel */
-    .title {
-      position: fixed;
-      top: 20px;
-      width: 100%;
-      text-align: center;
-      color: rgba(255,255,255,0.22);
+    /* Tittel øverst */
+    .site-title {
+      position: absolute;
+      top: 18px;
+      left: 22px;
       font-size: 12px;
-      letter-spacing: 1px;
-      user-select: none;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      opacity: 0.7;
     }
 
-    /* Liten prikk (ny play-knapp) */
-    .star {
-      width: 12px;           /* ← endre størrelse her (8–14px fungerer fint) */
-      height: 12px;
+    /* Midt-innhold */
+    .center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    /* Den lille prikken */
+    .play-dot {
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255, 255, 255, 0.35);
       cursor: pointer;
-      transition: 
-        transform 0.25s ease,
-        opacity 0.25s ease,
-        box-shadow 0.3s ease;
+      transition: box-shadow 0.4s ease, transform 0.4s ease,
+        background 0.4s ease;
     }
 
-    /* Liten respons ved hover (svært mild) */
-    .star:hover {
-      transform: scale(1.15);
-      opacity: 1;
-    }
-
-    /* Glød når lyd spiller */
-    .playing {
-      box-shadow: 0 0 8px 3px rgba(255,255,255,0.45);
+    /* Når den spiller – glødende */
+    .play-dot.playing {
+      background: #ffffff;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.65),
+                  0 0 26px rgba(255, 255, 255, 0.45);
+      transform: scale(1.08);
     }
 
     /* Undertekst */
     .subtitle {
-      position: fixed;
-      top: calc(50% + 40px);
-      width: 100%;
-      text-align: center;
-      color: rgba(255,255,255,0.25);
+      margin-top: 14px;
       font-size: 12px;
-      letter-spacing: 0.5px;
-      user-select: none;
-      pointer-events: none;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+      opacity: 0.8;
     }
 
-    /* Copyright nederst */
-    .credit {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      color: rgba(255,255,255,0.45);
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      user-select: none;
+    /* Footer nederst */
+    .footer {
+      position: absolute;
+      bottom: 18px;
+      right: 22px;
+      font-size: 11px;
+      opacity: 0.6;
     }
   </style>
 </head>
 <body>
+  <div class="site-title">interobjective soundscapes</div>
 
-  <!-- Øverst: subtil tittel -->
-  <div class="title">interobjective soundscapes</div>
+  <div class="center">
+    <div class="play-dot" id="play-dot" aria-label="Play fragment"></div>
+    <div class="subtitle">an echo of a future event</div>
+  </div>
 
-  <!-- Lydfil (fragment) -->
-  <audio id="frag" src="fragment1_requiemforastar.wav"></audio>
-
-  <!-- Play-prikk -->
-  <div class="star" id="playDot"></div>
-
-  <!-- Undertekst -->
-  <div class="subtitle">an echo of a future event</div>
-
-  <!-- Copyright -->
-  <div class="credit">© 2025 S. Hole</div>
+  <div class="footer">© Sigurd Hole</div>
 
   <script>
-    const audio = document.getElementById('frag');
-    const dot = document.getElementById('playDot');
+    // Lydfragment
+    const audio = new Audio('fragment1_requiemforastar.wav');
+    const playDot = document.getElementById('play-dot');
 
-    dot.addEventListener('click', () => {
+    let isPlaying = false;
+
+    // Klikk på prikken: start kun hvis det ikke allerede spiller
+    playDot.addEventListener('click', () => {
+      if (isPlaying) {
+        // Ignorer klikk mens fragmentet spiller
+        return;
+      }
+
+      isPlaying = true;
+      playDot.classList.add('playing');
       audio.currentTime = 0;
-      audio.play();
-      dot.classList.add('playing');
+
+      audio.play().catch(err => {
+        console.error('Audio playback failed:', err);
+        isPlaying = false;
+        playDot.classList.remove('playing');
+      });
     });
 
+    // Når fragmentet er ferdig, slukker prikken og kan klikkes igjen
     audio.addEventListener('ended', () => {
-      dot.classList.remove('playing');
+      isPlaying = false;
+      playDot.classList.remove('playing');
     });
   </script>
-
 </body>
 </html>
