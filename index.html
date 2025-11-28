@@ -30,8 +30,8 @@
 
     /* Liten hvit prikk */
     .star {
-      width: 10px;                   /* ENDRET */
-      height: 10px;                  /* ENDRET */
+      width: 12px;                   /* ENDRET */
+      height: 12px;                  /* ENDRET */
       border-radius: 50%;
       background: rgba(255,255,255,1); /* alltid hvit */
       cursor: pointer;
@@ -44,10 +44,11 @@
     /* Glød når den spiller */
     .star.playing {
       box-shadow:
-        0 0 8px rgba(255,255,255,0.6),
-        0 0 16px rgba(255,255,255,0.4);
-      transform: scale(1.05);
-    }
+      0 0 12px rgba(255,255,255,0.75),
+      0 0 28px rgba(255,255,255,0.45),
+      0 0 45px rgba(255,255,255,0.28);
+    transform: scale(1.06);
+}
 
     /* Undertekst */
     .subtitle {
@@ -67,7 +68,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      color: rgba(255,255,255,0.45);
+      color: rgba(255,255,255,0.32);
       font-size: 12px;
       letter-spacing: 0.5px;
       user-select: none;
