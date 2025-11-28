@@ -1,122 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>interobjective soundscapes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Basestil */
-    body {
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background: #000000;
+    }
+
+    body {
+      background: #050509;
       color: #f5f5f5;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, sans-serif;
-      height: 100vh;
+        sans-serif;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    /* Tittel øverst */
-    .site-title {
-      position: absolute;
-      top: 18px;
-      left: 22px;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: lowercase;
-      opacity: 0.7;
-    }
-
-    /* Midt-innhold */
-    .center {
+    .page {
       flex: 1;
       display: flex;
       flex-direction: column;
+      padding: 24px 18px;
+    }
+
+    header {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .center {
       text-align: center;
-      padding: 24px;
     }
 
-    /* Den lille prikken */
-    .play-dot {
-      width: 18px;
-      height: 18px;
+    .play-button {
+      width: 24px;
+      height: 24px;
+      margin: 0 auto 16px auto;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.35);
+      background: radial-gradient(circle at 50% 50%, #ffffff, #d0d8ff);
+      box-shadow:
+        0 0 6px rgba(255, 255, 255, 0.7),
+        0 0 18px rgba(160, 180, 255, 0.55),
+        0 0 28px rgba(120, 140, 255, 0.35);
       cursor: pointer;
-      transition: box-shadow 0.4s ease, transform 0.4s ease,
-        background 0.4s ease;
+      transition:
+        transform 160ms ease-out,
+        box-shadow 160ms ease-out,
+        opacity 160ms ease-out;
     }
 
-    /* Når den spiller – glødende */
-    .play-dot.playing {
-      background: #ffffff;
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.65),
-                  0 0 26px rgba(255, 255, 255, 0.45);
-      transform: scale(1.08);
+    .play-button:hover {
+      transform: scale(1.2);
+      box-shadow:
+        0 0 10px rgba(255, 255, 255, 0.9),
+        0 0 26px rgba(170, 190, 255, 0.7),
+        0 0 40px rgba(130, 150, 255, 0.5);
     }
 
-    /* Undertekst */
-    .subtitle {
-      margin-top: 14px;
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: lowercase;
+    .play-button.is-playing {
+      opacity: 0.8;
+      box-shadow:
+        0 0 4px rgba(255, 255, 255, 0.6),
+        0 0 14px rgba(150, 170, 255, 0.35);
+    }
+
+    .caption {
+      font-size: 0.9rem;
       opacity: 0.8;
     }
 
-    /* Footer nederst */
-    .footer {
-      position: absolute;
-      bottom: 18px;
-      right: 22px;
-      font-size: 11px;
-      opacity: 0.6;
+    footer {
+      font-size: 0.7rem;
+      opacity: 0.55;
+      text-align: right;
+      padding-top: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 32px 40px;
+      }
+      .caption {
+        font-size: 1rem;
+      }
+      header {
+        font-size: 0.85rem;
+      }
+      footer {
+        font-size: 0.75rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="site-title">interobjective soundscapes</div>
+  <div class="page">
+    <header>interobjective soundscapes</header>
 
-  <div class="center">
-    <div class="play-dot" id="play-dot" aria-label="Play fragment"></div>
-    <div class="subtitle">an echo of a future event</div>
+    <main>
+      <div class="center">
+        <div class="play-button" id="playButton" aria-label="play fragment"></div>
+        <p class="caption">an echo of a future event</p>
+      </div>
+    </main>
+
+    <footer>© Sigurd Hole</footer>
   </div>
 
-  <div class="footer">© Sigurd Hole</div>
+  <audio id="fragmentAudio" src="fragment1_requiemforastar.wav"></audio>
 
   <script>
-    // Lydfragment
-    const audio = new Audio('fragment1_requiemforastar.wav');
-    const playDot = document.getElementById('play-dot');
+    const button = document.getElementById("playButton");
+    const audio = document.getElementById("fragmentAudio");
 
     let isPlaying = false;
 
-    // Klikk på prikken: start kun hvis det ikke allerede spiller
-    playDot.addEventListener('click', () => {
-      if (isPlaying) {
-        // Ignorer klikk mens fragmentet spiller
-        return;
-      }
+    button.addEventListener("click", () => {
+      if (!audio.src) return;
 
-      isPlaying = true;
-      playDot.classList.add('playing');
-      audio.currentTime = 0;
-
-      audio.play().catch(err => {
-        console.error('Audio playback failed:', err);
+      if (!isPlaying) {
+        audio.currentTime = 0;
+        audio.play();
+        isPlaying = true;
+        button.classList.add("is-playing");
+      } else {
+        audio.pause();
         isPlaying = false;
-        playDot.classList.remove('playing');
-      });
+        button.classList.remove("is-playing");
+      }
     });
 
-    // Når fragmentet er ferdig, slukker prikken og kan klikkes igjen
-    audio.addEventListener('ended', () => {
+    audio.addEventListener("ended", () => {
       isPlaying = false;
-      playDot.classList.remove('playing');
+      button.classList.remove("is-playing");
     });
   </script>
 </body>
