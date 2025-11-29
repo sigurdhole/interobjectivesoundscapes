@@ -59,14 +59,14 @@
   transform: translate(-50%, 45px); /* 40px ned fra midtpunktet */
   width: auto;
   text-align: center;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.55);
   font-size: 12px;
   letter-spacing: 0.5px;
   user-select: none;
   pointer-events: none;
 }
 
-    /* Copyright nederst */
+    /* Copyright nederst høyre */
     .credit {
       position: fixed;
       bottom: 20px;
@@ -75,7 +75,19 @@
       font-size: 12px;
       letter-spacing: 0.5px;
       user-select: none;
-    }
+ }
+
+     /* Domene nederst venstre */
+    .domain {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  color: rgba(255,255,255,0.22);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  user-select: none;
+  pointer-events: none;
+}
   </style>
 </head>
 <body>
@@ -94,6 +106,9 @@
 
   <!-- Copyright -->
   <div class="credit">© 2025 S. Hole</div>
+
+  <!-- Domene -->
+  <div class="domain">🌐 interobjectivesoundscapes.site</div>
 
   <script>
     const audio = document.getElementById('frag');
