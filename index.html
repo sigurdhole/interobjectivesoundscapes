@@ -149,53 +149,66 @@
 </div>
 
    <script>
-    const audio = document.getElementById('frag');
-    const star  = document.getElementById('star');
-    let isPlaying = false;
+  const audio = document.getElementById('frag');
+  const star  = document.getElementById('star');
+  let isPlaying = false;
 
-    function spawnTinyStar() {
-      const s = document.createElement('div');
-      s.className = 'tiny-star';
+  // TINY STAR FUNKSJON MED MARGIN + LANG FADING
+  function spawnTinyStar() {
+    const tiny = document.createElement('div');
+    tiny.className = 'tiny-star';
 
-      // Litt margin så de ikke havner helt ute i kantene
-      const margin = 24;
-      const x = margin + Math.random() * (window.innerWidth  - margin * 2);
-      const y = margin + Math.random() * (window.innerHeight - margin * 2);
+    const margin = 40; // hindrer stjerner i å havne helt i kantene
 
-      s.style.left = x + 'px';
-      s.style.top  = y + 'px';
+    const x = margin + Math.random() * (window.innerWidth  - margin * 2);
+    const y = margin + Math.random() * (window.innerHeight - margin * 2);
 
-      document.body.appendChild(s);
+    tiny.style.left = `${x}px`;
+    tiny.style.top  = `${y}px`;
 
-      // Fjern etter at animasjonen er ferdig
-      setTimeout(() => {
-        s.remove();
-      }, 6000);
-    }
+    document.body.appendChild(tiny);
 
-    star.addEventListener('click', () => {
-      if (isPlaying) return; // ikke klikkbar mens den spiller
-
-      isPlaying = true;
-      star.classList.add('playing');
-
-      audio.currentTime = 0;
-      audio.play().then(() => {
-    setTimeout(() => {
-        spawnTinyStar();
-        }, 10000); // 10 sekunder forsinkelse
-    })
-        .catch(() => {
-          isPlaying = false;
-          star.classList.remove('playing');
-        });
+    // fade inn
+    requestAnimationFrame(() => {
+      tiny.style.opacity = '1';
     });
 
-    audio.addEventListener('ended', () => {
+    // fade ut etter 5 sek
+    setTimeout(() => {
+      tiny.style.opacity = '0';
+    }, 5000);
+
+    // fjern etter 8 sek
+    setTimeout(() => {
+      tiny.remove();
+    }, 8000);
+  }
+
+  // KLIKK PÅ PLAY-PRIKKEN
+  star.addEventListener('click', () => {
+    if (isPlaying) return; // kan ikke starte på nytt før ferdig
+
+    isPlaying = true;
+    star.classList.add('playing');
+
+    // Forsinket stjernetenning
+    setTimeout(() => {
+      spawnTinyStar();
+    }, 10000); // 10 sekunder
+
+    audio.currentTime = 0;
+    audio.play().catch(() => {
       isPlaying = false;
       star.classList.remove('playing');
     });
-  </script>
+  });
+
+  // NÅR LYDEN ER FERDIG
+  audio.addEventListener('ended', () => {
+    isPlaying = false;
+    star.classList.remove('playing'); // glød av
+  });
+</script>
 
 </body>
 </html>
