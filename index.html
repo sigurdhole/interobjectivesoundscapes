@@ -44,6 +44,18 @@
       0 0 22px rgba(255,255,255,0.32);  /* bredere ytre glød */
     }
 
+    .tiny-star {
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 0 8px rgba(255,255,255,0.9);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
     /* Glød når den spiller */
     .star.playing {
   box-shadow:
@@ -128,6 +140,30 @@
 </div>
 
   <script>
+  function spawnTinyStar() {
+    const t = document.createElement("div");
+    t.className = "tiny-star";
+
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+
+    t.style.left = `${x}px`;
+    t.style.top = `${y}px`;
+
+    document.body.appendChild(t);
+
+    // fade inn
+    requestAnimationFrame(() => {
+      t.style.opacity = 1;
+
+      // fade ut
+      setTimeout(() => {
+        t.style.opacity = 0;
+        setTimeout(() => t.remove(), 900);
+      }, 150);
+    });
+  }
+
     const audio = document.getElementById('frag');
     const star = document.getElementById('star');
     let isPlaying = false;
@@ -137,6 +173,8 @@
 
       isPlaying = true;
       star.classList.add('playing');
+
+      spawnTinyStar();
 
       audio.currentTime = 0;
       audio.play().catch(() => {
