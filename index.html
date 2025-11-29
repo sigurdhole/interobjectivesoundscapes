@@ -78,7 +78,7 @@
  }
 
      /* Domene nederst venstre */
-    .domain {
+   .domain {
   position: fixed;
   bottom: 20px;
   left: 20px;
@@ -87,13 +87,25 @@
   letter-spacing: 0.5px;
   user-select: none;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px; /* lite mellomrom mellom ikon og tekst */
+}
+
+/* Selve jordikonet */
+.earth {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);           /* veldig svak lysning */
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.18); /* antydning til topografi/tekstur */
 }
   </style>
 </head>
 <body>
 
   <!-- Øverst: subtil tittel -->
-  <div class="title">interobjective soundscapes</div>
+  <div class="title">echoes of sound and light</div>
 
   <!-- Lydfil -->
   <audio id="frag" src="fragment1_requiemforastar.wav"></audio>
@@ -108,7 +120,10 @@
   <div class="credit">© 2025 S. Hole</div>
 
   <!-- Domene -->
-  <div class="domain">🌐 interobjectivesoundscapes.site</div>
+  <div class="domain">
+  <span class="earth"></span>
+  interobjectivesoundscapes.site
+</div>
 
   <script>
     const audio = document.getElementById('frag');
