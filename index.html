@@ -44,17 +44,33 @@
       0 0 22px rgba(255,255,255,0.32);  /* bredere ytre glød */
     }
 
+        /* Små "stjerner" som tennes ved avspilling */
     .tiny-star {
-  position: fixed;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.9);
-  box-shadow: 0 0 8px rgba(255,255,255,0.9);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.8s ease-out;
-}
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 12px rgba(255,255,255,0.9);
+      opacity: 0;
+      pointer-events: none;
+      animation: tinyTwinkle 2.8s ease-out forwards;
+    }
+
+    @keyframes tinyTwinkle {
+      0% {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+      15% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.1);
+      }
+    }
 
     /* Glød når den spiller */
     .star.playing {
@@ -139,53 +155,52 @@
   interobjectivesoundscapes.site
 </div>
 
-  <script>
-  function spawnTinyStar() {
-    const t = document.createElement("div");
-    t.className = "tiny-star";
-
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight;
-
-    t.style.left = `${x}px`;
-    t.style.top = `${y}px`;
-
-    document.body.appendChild(t);
-
-    // fade inn
-    requestAnimationFrame(() => {
-      t.style.opacity = 1;
-
-      // fade ut
-      setTimeout(() => {
-        t.style.opacity = 0;
-        setTimeout(() => t.remove(), 900);
-      }, 150);
-    });
-  }
-
+   <script>
     const audio = document.getElementById('frag');
-    const star = document.getElementById('star');
+    const star  = document.getElementById('star');
     let isPlaying = false;
 
+    function spawnTinyStar() {
+      const s = document.createElement('div');
+      s.className = 'tiny-star';
+
+      // Litt margin så de ikke havner helt ute i kantene
+      const margin = 24;
+      const x = margin + Math.random() * (window.innerWidth  - margin * 2);
+      const y = margin + Math.random() * (window.innerHeight - margin * 2);
+
+      s.style.left = x + 'px';
+      s.style.top  = y + 'px';
+
+      document.body.appendChild(s);
+
+      // Fjern etter at animasjonen er ferdig
+      setTimeout(() => {
+        s.remove();
+      }, 3000);
+    }
+
     star.addEventListener('click', () => {
-      if (isPlaying) return;  // kan ikke klikke under avspilling
+      if (isPlaying) return; // ikke klikkbar mens den spiller
 
       isPlaying = true;
       star.classList.add('playing');
 
-      spawnTinyStar();
-
       audio.currentTime = 0;
-      audio.play().catch(() => {
-        isPlaying = false;
-        star.classList.remove('playing');
-      });
+      audio.play()
+        .then(() => {
+          // Tenn en liten stjerne idet lyden starter
+          spawnTinyStar();
+        })
+        .catch(() => {
+          isPlaying = false;
+          star.classList.remove('playing');
+        });
     });
 
     audio.addEventListener('ended', () => {
       isPlaying = false;
-      star.classList.remove('playing'); // glød av
+      star.classList.remove('playing');
     });
   </script>
 
