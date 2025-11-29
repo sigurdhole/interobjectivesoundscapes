@@ -54,22 +54,15 @@
       box-shadow: 0 0 12px rgba(255,255,255,0.9);
       opacity: 0;
       pointer-events: none;
-      animation: tinyTwinkle 2.8s ease-out forwards;
+      animation: tinyTwinkle 5.5s ease-out forwards;
     }
 
     @keyframes tinyTwinkle {
-      0% {
-        opacity: 0;
-        transform: scale(0.6);
-      }
-      15% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(1.1);
-      }
+  0%   { opacity: 0;   transform: scale(0.6); }
+  20%  { opacity: 1;   transform: scale(1); }
+  70%  { opacity: 1;   transform: scale(1.05); } /* holder lyset litt */
+  100% { opacity: 0;   transform: scale(1.1); }
+}
     }
 
     /* Glød når den spiller */
@@ -177,7 +170,7 @@
       // Fjern etter at animasjonen er ferdig
       setTimeout(() => {
         s.remove();
-      }, 3000);
+      }, 6000);
     }
 
     star.addEventListener('click', () => {
@@ -187,11 +180,11 @@
       star.classList.add('playing');
 
       audio.currentTime = 0;
-      audio.play()
-        .then(() => {
-          // Tenn en liten stjerne idet lyden starter
-          spawnTinyStar();
-        })
+      audio.play().then(() => {
+    setTimeout(() => {
+        spawnTinyStar();
+        }, 10000); // 10 sekunder forsinkelse
+    })
         .catch(() => {
           isPlaying = false;
           star.classList.remove('playing');
