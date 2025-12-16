@@ -56,8 +56,8 @@
         /* Små "stjerner" som tennes ved avspilling */
  .tiny-star {
   position: fixed;
-  width: 8px;   /* midlertidig STØRRE (var 3px) */
-  height: 8px;
+  width: 4px;   /* midlertidig STØRRE (var 3px) */
+  height: 4px;
   border-radius: 50%;
   background: rgba(255,255,255,1); /* helt hvit kjerne */
   box-shadow:
@@ -81,7 +81,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 70px); /* 45px ned fra midtpunktet */
+  transform: translate(-50%, 60px); /* 60px ned fra midtpunktet */
   width: auto;
   text-align: center;
   color: rgba(255,255,255,0.30);
@@ -196,7 +196,7 @@
     // Forsinket stjernetenning
     setTimeout(() => {
       spawnTinyStar();
-    }, 2000); // 2 sekunder
+    }, 8000); // 8 sekunder
 
     audio.currentTime = 0;
     audio.play().catch(() => {
